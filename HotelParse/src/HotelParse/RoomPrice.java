@@ -2,40 +2,104 @@ package HotelParse;
 
 public class RoomPrice {
 	
+	private String sourceSite;
+	private String hotelName;
 	private String checkInDate;
-	private String roomType;
-	private String price;
+	private String roomTypeEng;
+	private String roomTypeKor;
+	private String priceKRW;
 	
-	public RoomPrice(String checkInDate, String roomType, String price) {
+	
+	
+	public RoomPrice(String sourceSite, String hotelName, String checkInDate, String roomTypeEng, String roomTypeKor,
+			String priceKRW) {
 		super();
+		this.sourceSite = sourceSite;
+		this.hotelName = hotelName;
 		this.checkInDate = checkInDate;
-		this.roomType = roomType;
-		this.price = price;
+		this.roomTypeEng = roomTypeEng;
+		this.roomTypeKor = roomTypeKor;
+		this.priceKRW = priceKRW;
 	}
-	
+
+
+
+	public String getSourceSite() {
+		return sourceSite;
+	}
+
+
+
+	public void setSourceSite(String sourceSite) {
+		this.sourceSite = sourceSite;
+	}
+
+
+
+	public String getHotelName() {
+		return hotelName;
+	}
+
+
+
+	public void setHotelName(String hotelName) {
+		this.hotelName = hotelName;
+	}
+
+
+
 	public String getCheckInDate() {
 		return checkInDate;
 	}
+
+
+
 	public void setCheckInDate(String checkInDate) {
 		this.checkInDate = checkInDate;
 	}
-	public String getRoomType() {
-		return roomType;
+
+
+
+	public String getRoomTypeEng() {
+		return roomTypeEng;
 	}
-	public void setRoomType(String roomType) {
-		this.roomType = roomType;
+
+
+
+	public void setRoomTypeEng(String roomTypeEng) {
+		this.roomTypeEng = roomTypeEng;
 	}
-	public String getPrice() {
-		return price;
+
+
+
+	public String getRoomTypeKor() {
+		return roomTypeKor;
 	}
-	public void setPrice(String price) {
-		this.price = price;
+
+
+
+	public void setRoomTypeKor(String roomTypeKor) {
+		this.roomTypeKor = roomTypeKor;
 	}
-	
+
+
+
+	public String getPriceKRW() {
+		return priceKRW;
+	}
+
+
+
+	public void setPriceKRW(String priceKRW) {
+		this.priceKRW = priceKRW;
+	}
+
+
+
 	@Override
 	public String toString()
 	{
-		return checkInDate+";"+roomType+";"+price;
+		return sourceSite+";"+hotelName+";"+checkInDate+";"+roomTypeKor+";"+priceKRW;
 	}
 	
 
