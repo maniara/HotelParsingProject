@@ -13,48 +13,128 @@ import net.htmlparser.jericho.Source;
 import net.htmlparser.jericho.StartTag;
 
 public class ExpediaParser {
+	
+	private static boolean successFlag = false;
+	private static ArrayList<RoomPrice> roomPriceList = new ArrayList<RoomPrice>();
+	public static String hotelName;
+	public static String checkInDate;
+	public static String checkOutDate;
+	
+	
 	public static ArrayList<RoomPrice> getRooms(String hotelName, String checkInDate, String checkOutDate)
 			throws MalformedURLException, IOException {
+		//System.out.println("Get room information : "+checkInDate);
+		ExpediaParser.hotelName = hotelName;
+		ExpediaParser.checkInDate = checkInDate;
+		ExpediaParser.checkOutDate = checkOutDate;
 
-		ArrayList<RoomPrice> roomPriceList = new ArrayList<RoomPrice>();
+		String url = "https://www.expedia.co.kr/"+hotelName+".h6084370.Hotel-Information?chkin="+checkInDate+"&chkout="+checkOutDate+"&rm1=a2#rooms-and-rates";
+		//System.out.println(url);
 
-		// String url =
-		// "http://www.agoda.com/ko-kr/"+hotelName+"/hotel/seoul-kr.html?asq=r2grbjEASwGFtAW0rdj6nXG4s6hI%2fU6UzLzliGL7s2Qvee45iX9%2by9l4qcWSppbOu7380eYtA6P088u7B52Y5OoGPQGFw2APx1yVzBOrCDrGB49jKpm17msrzrMjaKms%2b0l33YdCWxhkjWx3Ys3Wm%2fLoDDgRc6WQkUOqVOxnO6d35htW7SeK1yBqrgehy5VjMWr9kwuA17ZV8N5ddxLteEqI7gGGHwQu3f5csAilUf%2bsuGhvXoqPvUpEDO0FFSMy&tick=635992835153&pagetypeid=7&origin=KR&cid=-1&htmlLanguage=ko-kr&checkIn="+checkInDate+"&checkout="+checkOutDate+"&los=1&rooms=1&adults=2&childs=0&isFromSearchBox=true";
-		// String url = "http://sofar-val.appspot.com/Login.html";
-		String url = "https://www.expedia.co.kr/Seoul-Hotels-Nine-Tree-Hotel.h6084370.Hotel-Information?chkin=2016.06.13&chkout=2016.06.14&";
-
-		boolean success = false;
-		while (success == false) {
+		//if Null data comes flag became false
+		while (successFlag == false) {
+			
 			Source source = new Source(new URL(url));
-			if(source.getAllElementsByClass("rate-plan rate-plan-first").size()==0)
+			
+			//No room on the dates
+			if(source.getFirstElementByClass("room-basic-info") == null)
+				return roomPriceList;
+			
+			//No type on the dates
+			if(source.getFirstElementByClass("room-basic-info").getAllElements("h3") == null)
 				continue;
-
-			for (Element e1 : source.getAllElementsByClass("rate-plan rate-plan-first")) 
+			
+			//No type on the dates
+			if(source.getAllElementsByClass("room room-above-fold first-room-featured").size()==0)
+				continue;
+			
+			/*for (Element e1 : source.getAllElementsByClass("room room-above-fold first-room-featured"))  //firstRoomType
 			{
-				//Element e1 = source.getFirstElementByClass("rate-plan rate-plan-first");
-				for(Element typeElement : e1.getFirstElementByClass("room-basic-info").getAllElements("h3")){
-					success = true;
-					//System.out.println(typeElement.getAttributeValue("class"));
-					System.out.println(typeElement.getContent());
-				}
-				
-				for(Element e2 : e1.getAllElementsByClass("rate-features"))
-				{
-					if(e2.getAllElementsByClass("room-amenity free-breakfast").size()==0)
-					{
-						System.out.println("No BK");
-						continue;
-					}
-					else
-					{
-						System.out.println("BK");
-					}
+				//System.out.println("first");
+				getRoomTypeInformation(e1);
+			}*/
+
+			//Loop on each type
+			for (Element e1 : source.getAllElementsByClass("room room-above-fold"))  
+			{
+				//System.out.println("second");
+				getRoomTypeInformation(e1);
+			}
+		}
+		successFlag = false;
+		return roomPriceList;
+	}
+
+	private static void getRoomTypeInformation(Element e1) {
+		RoomPrice rp = new RoomPrice("Expedia",ExpediaParser.hotelName,ExpediaParser.checkInDate);
+		int minPrice = 10000000;
+		
+		for(Element typeElement : e1.getFirstElementByClass("room-basic-info").getAllElements("h3")){ //get room type name
+			String type = typeElement.getContent().toString();
+			if(type == null){
+				successFlag = false;
+				return;
+			}
+			else{
+				successFlag = true;
+				rp.setRoomTypeKor(type);
+			}
+		}
+		
+		for(Element optionElement : e1.getAllElementsByClass("rate-plan rate-plan-first "))
+		{
+			if(isForFreeCancle(optionElement) && isForBreakfast(optionElement))
+			{
+				int price = getPrice(optionElement);
+				//System.out.println("Target!");
+				if(minPrice > price){
+					minPrice = price;
 				}
 			}
-			
-			
 		}
+		
+		for(Element optionElement : e1.getAllElementsByClass("rate-plan "))
+		{
+			if(isForFreeCancle(optionElement) && isForBreakfast(optionElement))
+			{
+				int price = getPrice(optionElement);
+				//System.out.println("Target!");
+				if(minPrice > price){
+					minPrice = price;
+				}
+			}
+		}
+		
+		//maximum price can be printed
+		if(minPrice != 10000000){
+			rp.setPriceKRW(minPrice+"");
+			if(rp.getRoomTypeKor() != null)
+				roomPriceList.add(rp);
+			//System.out.println(rp.toString());
+		}
+	}
 
-		return roomPriceList;
+	private static int getPrice(Element optionElement) {
+		if(optionElement.getFirstElementByClass(" room-price ") == null)
+			return 10000000;
+		String ret = optionElement.getFirstElementByClass(" room-price ").getContent().toString();
+		if(ret == null)
+			ret = "";
+				
+		return Integer.parseInt(ret.replace(",", "").replace("₩", ""));
+	}
+
+	private static boolean isForBreakfast(Element optionElement) {
+		boolean retVal = false;
+		if(optionElement.getAllElementsByClass("room-amenity free-breakfast").size() != 0)
+			retVal = true;
+		return retVal;
+	}
+
+	private static boolean isForFreeCancle(Element optionElement) {
+		boolean retVal = false;
+		if(optionElement.getAllElementsByClass("free-cancellation-short free-text").size() != 0)
+			retVal = true;
+		return retVal;
 	}
 }

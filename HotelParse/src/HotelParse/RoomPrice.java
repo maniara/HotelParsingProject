@@ -24,6 +24,14 @@ public class RoomPrice {
 
 
 
+	public RoomPrice(String sourceSite, String hotelName, String checkInDate) {
+		this.sourceSite = sourceSite;
+		this.hotelName = hotelName;
+		this.checkInDate = checkInDate;
+	}
+
+
+
 	public String getSourceSite() {
 		return sourceSite;
 	}

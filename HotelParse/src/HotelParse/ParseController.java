@@ -13,16 +13,25 @@ public class ParseController {
 	{
 		int idays = 0;
 		int num_days=30;
-		ArrayList<RoomPrice> pList = new ArrayList();
+		ArrayList<RoomPrice> pList = new ArrayList<RoomPrice>();
 		
 		while (idays<num_days){
-			//DateConverter temp = new DateConverter();
+			//Setting date
 			String checkin=DateConverter.getDate(idays );
 			String checkout=DateConverter.getDate(idays+1);
-			//ArrayList<RoomPrice> pList = new AgodaParser().getRooms("", checkin, checkout);
+			
+			//calling Parsers
 			pList.addAll(AgodaParser.getRooms("nine-tree-hotel-myeong-dong", checkin, checkout));
+			pList.addAll(ExpediaParser.getRooms("Seoul-Hotels-Nine-Tree-Hotel", checkin, checkout));
 		
 			idays++;
+			
+			//when fast requests have problem use sleep
+			try {
+			    Thread.sleep(0);                 //1000 milliseconds is one second.
+			} catch(InterruptedException ex) {
+			    Thread.currentThread().interrupt();
+			}
 		}
 		
 		for(RoomPrice rp : pList)
