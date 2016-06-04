@@ -1,6 +1,9 @@
 package HotelParse;
 import java.util.Calendar;
 import java.util.Locale;
+
+import org.json.simple.parser.ParseException;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.DateFormat;
@@ -9,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 public class ParseController {
-	public static void main(String args[]) throws MalformedURLException,IOException
+	public static void main(String args[]) throws MalformedURLException,IOException, ParseException
 	{
 		int idays = 0;
 		int num_days=30;
