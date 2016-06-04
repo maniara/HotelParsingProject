@@ -21,7 +21,7 @@ public class ParseController {
 			String checkout=DateConverter.getDate(idays+1);
 			
 			//calling Parsers
-			pList.addAll(AgodaParser.getRooms("nine-tree-hotel-myeong-dong", checkin, checkout));
+			//pList.addAll(AgodaParser.getRooms("nine-tree-hotel-myeong-dong", checkin, checkout));
 			pList.addAll(ExpediaParser.getRooms("Seoul-Hotels-Nine-Tree-Hotel", checkin, checkout));
 		
 			idays++;
