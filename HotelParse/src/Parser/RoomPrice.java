@@ -1,4 +1,4 @@
-package HotelParse;
+package Parser;
 
 public class RoomPrice {
 	

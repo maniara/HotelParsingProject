@@ -1,8 +1,11 @@
-package HotelParse;
+package Parser;
 import java.util.Calendar;
 import java.util.Locale;
 
 import org.json.simple.parser.ParseException;
+
+import HotesIdentifier.AgodaIdentifier;
+import HotesIdentifier.ExpediaIdentifier;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -22,10 +25,17 @@ public class ParseController {
 			//Setting date
 			String checkin=DateConverter.getDate(idays );
 			String checkout=DateConverter.getDate(idays+1);
-			
+			System.out.println("Now reading : "+checkin);
 			//calling Parsers
-			//pList.addAll(AgodaParser.getRooms("nine-tree-hotel-myeong-dong", checkin, checkout));
-			pList.addAll(ExpediaParser.getRooms("Seoul-Hotels-Nine-Tree-Hotel", checkin, checkout));
+			//ArrayList<RoomPrice> todayPrice = AgodaParser.getRooms(new AgodaIdentifier().getSejong(), checkin, checkout);
+			ArrayList<RoomPrice> todayPrice = ExpediaParser.getRooms(new ExpediaIdentifier().getSkypark(), checkin.replace("-","."), checkout.replace("-","."));
+			pList.addAll(todayPrice);
+			
+			
+			for(RoomPrice rp : todayPrice)
+			{
+				System.out.println(rp.toString());
+			}
 		
 			idays++;
 			
@@ -37,6 +47,7 @@ public class ParseController {
 			}
 		}
 		
+		System.out.println("------------");
 		for(RoomPrice rp : pList)
 		{
 			System.out.println(rp.toString());

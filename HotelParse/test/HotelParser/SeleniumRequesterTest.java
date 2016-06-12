@@ -2,7 +2,7 @@ package HotelParser;
 
 import org.junit.Test;
 
-import HotelParse.SeleniumRequester;
+import RequestHandler.SeleniumRequester;
 
 public class SeleniumRequesterTest {
 	

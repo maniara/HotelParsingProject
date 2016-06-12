@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import HotelParse.ExpediaSourceView;
+import Parser.ExpediaSourceView;
 
 public class ExpediaSourceViewTest {
 	

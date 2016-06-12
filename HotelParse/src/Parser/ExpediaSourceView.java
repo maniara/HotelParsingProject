@@ -1,4 +1,4 @@
-package HotelParse;
+package Parser;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
