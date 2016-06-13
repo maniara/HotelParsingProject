@@ -1,4 +1,4 @@
-package HotesIdentifier;
+package HotelIdentifier;
 
 public class AgodaIdentifier extends HotelIdentifier{
 	@Override

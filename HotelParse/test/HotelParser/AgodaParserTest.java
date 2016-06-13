@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import HotesIdentifier.AgodaIdentifier;
+import HotelIdentifier.AgodaIdentifier;
 import Parser.AgodaParser;
 import Parser.ExpediaParser;
 import Parser.RoomPrice;

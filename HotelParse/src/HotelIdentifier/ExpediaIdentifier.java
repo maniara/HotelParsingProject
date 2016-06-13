@@ -1,10 +1,10 @@
-package HotesIdentifier;
+package HotelIdentifier;
 
 public class ExpediaIdentifier extends HotelIdentifier{
 
 	@Override
 	public void setNinetree() {
-		ninetree= "Seoul-Hotels-Nine-Tree-Hotel";
+		ninetree= "Seoul-Hotels-Nine-Tree-Hotel.h6084370";
 		
 	}
 

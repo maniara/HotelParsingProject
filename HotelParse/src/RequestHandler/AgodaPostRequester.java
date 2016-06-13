@@ -7,7 +7,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class AgodaRequester {
+//Not used
+public class AgodaPostRequester {
 	public static String sendPost(String hotelName, String checkInDate, String checkOutDate) throws IOException
 	{
 		//158628, 135.09

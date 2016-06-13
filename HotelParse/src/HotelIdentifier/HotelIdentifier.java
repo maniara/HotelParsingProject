@@ -1,4 +1,4 @@
-package HotesIdentifier;
+package HotelIdentifier;
 
 public abstract class HotelIdentifier {
 	public String ninetree;

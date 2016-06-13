@@ -30,13 +30,8 @@ public class ExpediaParser {
 		ExpediaParser.checkInDate = checkInDate;
 		ExpediaParser.checkOutDate = checkOutDate;
 
-		//https://www.expedia.co.kr/Seoul-Hotels-Nine-Tree-Hotel.h6084370.Hotel-Information?chkin=2016.6.12&chkout=2016.6.13&rm1=a1#chkin=2016.06.11&chkout=2016.06.12&adults=1&children=0&swpToggleOn=false&ts=1465293392808
 		String url = "https://www.expedia.co.kr/"+hotelName+".Hotel-Information?chkin="+checkInDate+"&chkout="+checkOutDate+"&rm1=a2";
-		System.out.println(url);
-		//"https://www.expedia.co.kr/Seoul-Hotels-Nine-Tree-Hotel.h6084370.Hotel-Information?chkin=2016.06.13&chkout=2016.06.14&rm1=a2&hwrqCacheKey=b8bbe2f0-0d2f-41ec-9db8-ca025f4530f0HWRQ1464857938255&c=30966cb8-c3d9-4276-bc5c-5a3311cfe3d7&";
-		//"https://www.expedia.co.kr/Seoul-Hotels-Nine-Tree-Hotel.h6084370.Hotel-Information?chkin=2016-6-6&chkout=2016-6-7&rm1=a2#rooms-and-rates"
-		//"https://www.expedia.co.kr/Seoul-Hotels-Sejong-Hotel.h7239.Hotel-Information?chkin=2016.06.11&chkout=2016.06.12&rm1=a2&hwrqCacheKey=79659934-84cc-440f-9db2-a82077ce3c33HWRQ1465480890682&c=c6afbdfd-95ec-4fab-9c10-fb66d0189130&"
-		//"https://www.expedia.co.kr/Seoul-Hotels-Sejong-Hotel.h7239.Hotel-Information?chkin=2016.6.11&chkout=2016.6.12&rm1=a2"
+		//System.out.println(url);
 		String htmlString = SeleniumRequester.getResponse(url);
 		
 		//if Null data comes flag became false
@@ -55,19 +50,19 @@ public class ExpediaParser {
 			//System.out.println("CHECK");
 			//No room on the dates
 			if(source.getFirstElementByClass("room-basic-info") == null){
-				System.out.println("No room-basic-info tag");
+				//System.out.println("No room-basic-info tag");
 				return roomPriceList;
 			}
 			
 			//No type on the dates
 			if(source.getFirstElementByClass("room-basic-info").getAllElements("h3") == null){
-				System.out.println("No H3 tag in room-basic-info");
+				//System.out.println("No H3 tag in room-basic-info");
 				continue;
 			}
 			
 			//No type on the dates
 			if(source.getAllElementsByClass("room room-above-fold first-room-featured").size()==0){
-				System.out.println("No room room-above-fold tag");
+				//System.out.println("No room room-above-fold tag");
 				continue;
 			}
 			
@@ -103,17 +98,15 @@ public class ExpediaParser {
 	}
 
 	private static void getRoomTypeInformation(Element e1) {
-		RoomPrice rp = new RoomPrice("Expedia",ExpediaParser.hotelName,ExpediaParser.checkInDate);
 		int minPrice = MAX_PRICE;
 		String type = "";
 		
 		for(Element typeElement : e1.getFirstElementByClass("room-basic-info").getAllElements("h3")){ //get room type name
 			type = typeElement.getContent().toString();
-			System.out.println("Type:"+type+"in H3 tag");
+			//System.out.println("Type:"+type+"in H3 tag");
 			if(type != null){
 				//System.out.println("Flag Changed");
 				successFlag = true;
-				rp.setRoomTypeKor(type);
 			}
 		}
 		
@@ -122,60 +115,67 @@ public class ExpediaParser {
 			Element typeElement = e1.getFirstElementByClass("room-basic-info").getFirstElement("button")
 					.getFirstElement("span");
 			type = typeElement.getContent().toString();
-			System.out.println("Type:"+type+"in button");
+			//System.out.println("Type:"+type+"in button");
 			if (type == null) {
 				successFlag = false;
 				return;
 			} else {
 				// System.out.println("Flag Changed");
 				successFlag = true;
-				rp.setRoomTypeKor(type);
 			}
 		}
+		
+		
 
 		for(Element optionElement : e1.getAllElementsByClass("rate-plan rate-plan-first "))
 		{
-			if(isForFreeCancle(optionElement) && !isForBreakfast(optionElement))
-			{
-				int price = getPrice(optionElement);
-				//System.out.println("Target!");
-				if(minPrice > price){
-					minPrice = price;
-				}
+			RoomPrice rp = new RoomPrice("Expedia",ExpediaParser.hotelName,ExpediaParser.checkInDate);
+			rp.setRoomTypeKor(type);
+			rp.setBreakfastIncluded(isForBreakfast(optionElement));
+			rp.setFreeCancle(isForFreeCancle(optionElement));
+			int price = getPrice(optionElement);
+			
+			if(price != MAX_PRICE){
+				//System.out.println(rp.toString()+" added");
+				roomPriceList.add(rp);
 			}
+			
 		}
 		
 		for(Element optionElement : e1.getAllElementsByClass("rate-plan rate-plan-first"))
 		{
-			if(isForFreeCancle(optionElement) && !isForBreakfast(optionElement))
-			{
-				int price = getPrice(optionElement);
-				//System.out.println("Target!");
-				if(minPrice > price){
-					minPrice = price;
-				}
+			RoomPrice rp = new RoomPrice("Expedia",ExpediaParser.hotelName,ExpediaParser.checkInDate);
+			rp.setRoomTypeKor(type);
+			rp.setBreakfastIncluded(isForBreakfast(optionElement));
+			rp.setFreeCancle(isForFreeCancle(optionElement));
+			int price = getPrice(optionElement);
+			rp.setPriceKRW(price+"");
+			
+			if(price != MAX_PRICE){
+				//System.out.println(rp.toString()+" added");
+				roomPriceList.add(rp);
 			}
 		}
 		
 		for(Element optionElement : e1.getAllElementsByClass("rate-plan "))
 		{
-			if(isForFreeCancle(optionElement) && !isForBreakfast(optionElement))
-			{
-				int price = getPrice(optionElement);
-				//System.out.println("Target!");
-				if(minPrice > price){
-					minPrice = price;
-				}
+			RoomPrice rp = new RoomPrice("Expedia",ExpediaParser.hotelName,ExpediaParser.checkInDate);
+			rp.setRoomTypeKor(type);
+			rp.setBreakfastIncluded(isForBreakfast(optionElement));
+			rp.setFreeCancle(isForFreeCancle(optionElement));
+			int price = getPrice(optionElement);
+			rp.setPriceKRW(price+"");
+			
+			if(price != MAX_PRICE){
+				//System.out.println(rp.toString()+" added");
+				roomPriceList.add(rp);
 			}
+				
 		}
 		
-		//maximum price can be printed
-		if(minPrice != MAX_PRICE){
-			rp.setPriceKRW(minPrice+"");
-			if(rp.getRoomTypeKor() != null)
-				roomPriceList.add(rp);
-			//System.out.println(rp.toString());
-		}
+		//System.out.println(rp.toString()+" added");
+		
+		
 	}
 
 	private static int getPrice(Element optionElement) {
@@ -192,7 +192,7 @@ public class ExpediaParser {
 		boolean retVal = false;
 		if(optionElement.getAllElementsByClass("room-amenity free-breakfast").size() != 0)
 			retVal = true;
-		System.out.println("BK included:"+retVal);
+		//System.out.println("BK included:"+retVal);
 		return retVal;
 	}
 
@@ -216,7 +216,7 @@ public class ExpediaParser {
 		if(opt1 == true  || opt2 == true)
 			retVal = true;
 		
-		System.out.println("Free cancle:"+retVal);
+		//System.out.println("Free cancle:"+retVal);
 		return retVal;
 	}
 }

@@ -1,5 +1,7 @@
 package Parser;
 
+import java.util.Date;
+
 public class RoomPrice {
 	
 	private String sourceSite;
@@ -8,6 +10,9 @@ public class RoomPrice {
 	private String roomTypeEng;
 	private String roomTypeKor;
 	private String priceKRW;
+	private boolean freeCancle;
+	private boolean breakfastIncluded;
+	private String createDate;
 	
 	
 	
@@ -20,6 +25,7 @@ public class RoomPrice {
 		this.roomTypeEng = roomTypeEng;
 		this.roomTypeKor = roomTypeKor;
 		this.priceKRW = priceKRW;
+		this.createDate = new Date().toString();
 	}
 
 
@@ -104,10 +110,52 @@ public class RoomPrice {
 
 
 
+	public boolean isFreeCancle() {
+		return freeCancle;
+	}
+
+
+
+	public void setFreeCancle(boolean freeCancle) {
+		this.freeCancle = freeCancle;
+	}
+
+
+
+	public boolean isBreakfastIncluded() {
+		return breakfastIncluded;
+	}
+
+
+
+	public void setBreakfastIncluded(boolean breakfastIncluded) {
+		this.breakfastIncluded = breakfastIncluded;
+	}
+
+
+
+	public String getCreateDate() {
+		return createDate;
+	}
+
+
+
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
+
+
+
 	@Override
 	public String toString()
 	{
-		return sourceSite+";"+hotelName+";"+checkInDate+";"+roomTypeKor+";"+priceKRW;
+		String cancle = "환불불가";
+		String bk = "조식불포함";
+		if(freeCancle)
+			cancle="환불가능";
+		if(this.breakfastIncluded)
+			bk = "조식포함";
+		return sourceSite+";"+hotelName+";"+checkInDate+";"+roomTypeKor+";"+priceKRW+";"+cancle+";"+bk;
 	}
 	
 
