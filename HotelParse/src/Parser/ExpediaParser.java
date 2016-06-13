@@ -23,14 +23,14 @@ public class ExpediaParser {
 	public final static int MAX_PRICE = 10000000;
 	
 	
-	public static ArrayList<RoomPrice> getRooms(String hotelName, String checkInDate, String checkOutDate)
+	public static ArrayList<RoomPrice> getRooms(String hotelName, String hotelId, String checkInDate, String checkOutDate)
 			throws MalformedURLException, IOException {
 		//System.out.println("Get room information : "+checkInDate);
 		ExpediaParser.hotelName = hotelName;
 		ExpediaParser.checkInDate = checkInDate;
 		ExpediaParser.checkOutDate = checkOutDate;
 
-		String url = "https://www.expedia.co.kr/"+hotelName+".Hotel-Information?chkin="+checkInDate+"&chkout="+checkOutDate+"&rm1=a2";
+		String url = "https://www.expedia.co.kr/"+hotelId+".Hotel-Information?chkin="+checkInDate+"&chkout="+checkOutDate+"&rm1=a2";
 		//System.out.println(url);
 		String htmlString = SeleniumRequester.getResponse(url);
 		

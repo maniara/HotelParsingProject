@@ -17,7 +17,7 @@ import net.htmlparser.jericho.Source;
 import net.htmlparser.jericho.StartTag;
 
 public class BookingDotComParser {
-	public static ArrayList<RoomPrice> getRoom(String hotelName, String checkInDate, String checkOutDate) {
+	public static ArrayList<RoomPrice> getRoom(String hotelName, String hotelId, String checkInDate, String checkOutDate) {
 		ArrayList<RoomPrice> retList = new ArrayList<RoomPrice>();
 		ArrayList<String> roomTypeList = new ArrayList<String>();
 		ArrayList<String> priceList = new ArrayList<String>();
@@ -29,7 +29,7 @@ public class BookingDotComParser {
 		
 		//http://www.booking.com/hotel/kr/loisir-seoul-myeongdong.ko.html?dcid=1;checkin=2016-06-13;checkout=2016-07-20;dest_type=city;dist=0;group_adults=2;hpos=1;room1=A%2CA;sb_price_type=total;type=total;ucfs=1&
 
-		String url = "http://www.booking.com/hotel/kr/" + hotelName + ".ko.html?dcid=1;checkin=" + checkInDate
+		String url = "http://www.booking.com/hotel/kr/" + hotelId + ".ko.html?dcid=1;checkin=" + checkInDate
 				+ ";checkout=" + checkOutDate
 				+ ";dest_type=city;dist=0;group_adults=2;hpos=1;room1=A%2CA;sb_price_type=total;type=total;ucfs=1&";
 		//System.out.println(url);

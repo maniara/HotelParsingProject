@@ -25,7 +25,7 @@ public class ParseController {
 	public static void main(String args[]) throws MalformedURLException,IOException, ParseException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
 		int idays = 5;
-		int num_days=10;
+		int num_days=7;
 		ArrayList<RoomPrice> pList = new ArrayList<RoomPrice>();
 		
 		while (idays<num_days){
@@ -63,14 +63,19 @@ public class ParseController {
 		
 		for(String hotel : hotelList)
 		{
-			//Expedia
 			System.out.print(hotel+",");
-			Method hotelGetter = getHotelGetter(EI,hotel);
-			rpList.addAll(ExpediaParser.getRooms((String) hotelGetter.invoke(EI), checkin.replace("-","."), checkout.replace("-",".")));
+			
+			//Agoda
+			Method agodaHotelGetter = getHotelGetter(AI,hotel);
+			rpList.addAll(AgodaParser.getRooms(hotel, (String) agodaHotelGetter.invoke(AI), checkin.replace("-","."), checkout.replace("-",".")));
+			
+			//Expedia
+			Method expediaHotelGetter = getHotelGetter(EI,hotel);
+			rpList.addAll(ExpediaParser.getRooms(hotel, (String) expediaHotelGetter.invoke(EI), checkin.replace("-","."), checkout.replace("-",".")));
 			
 			//Booking
-			//hotelGetter = getHotelGetter(BI,hotel);
-			//rpList.addAll(BookingDotComParser.getRoom((String) hotelGetter.invoke(BI), checkin, checkout));
+			Method bookingHotelGetter = getHotelGetter(BI,hotel);
+			rpList.addAll(BookingDotComParser.getRoom(hotel, (String) bookingHotelGetter.invoke(BI), checkin, checkout));
 		}
 		
 		return rpList;
