@@ -51,19 +51,19 @@ public class AgodaParser {
 					if (e1.getAttributeValue("data-selenium").equals("room-item")) {
 						
 						boolean includedBreakfast = false;
+						//cannot find cancle impossible case
+						boolean freeCancle = true;
 						
 						//breakfast include check
 						for(Element subE : e1.getAllElements())
 						{
-							if (subE.getAttributeValue("data-selenium") == null)
-								continue;
-							if (subE.getAttributeValue("data-selenium").equals("breakfast-included")) {
-								includedBreakfast = true;
+							if (subE.getAttributeValue("data-selenium") != null) {
+								if (subE.getAttributeValue("data-selenium").equals("breakfast-included")) {
+									includedBreakfast = true;
+									break;
+								}
 							}
 						}
-						
-						if(includedBreakfast)
-							continue;
 						
 						String roomType;
 						String price;
@@ -73,8 +73,12 @@ public class AgodaParser {
 						roomType = e1.getAttributeValue("data-room-name");
 						Element priceElement = e1.getFirstElementByClass("sellprice purple");
 						price = priceElement.getContent().toString().trim().replace(",", "");
+						
+						RoomPrice rp = new RoomPrice("Agoda", hotelName, checkInDate, roomType, roomType, price);
+						rp.setBreakfastIncluded(includedBreakfast);
+						rp.setFreeCancle(freeCancle);
 
-						roomPriceList.add(new RoomPrice("Agoda", hotelName, checkInDate, roomType, roomType, price));
+						roomPriceList.add(rp);
 					}
 				}
 			}

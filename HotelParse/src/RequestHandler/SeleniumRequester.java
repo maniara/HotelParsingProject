@@ -32,6 +32,12 @@ public class SeleniumRequester {
 			driver = new FirefoxDriver ();
 		Wait<WebDriver> wait = new WebDriverWait(driver, 30);
         driver.get(url);
+        try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         driver.findElement(By.cssSelector(("a[data-selenium='currency']"))).click();
         driver.findElement(By.cssSelector(("a[data-selenium='currency-code'][title='ÇÑ±¹ ¿ø']"))).click();
 

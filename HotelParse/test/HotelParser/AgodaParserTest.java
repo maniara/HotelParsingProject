@@ -13,7 +13,7 @@ import Parser.RoomPrice;
 public class AgodaParserTest {
 	@Test
 	public void getRoomTest() throws MalformedURLException, IOException{
-		ArrayList<RoomPrice> pList = AgodaParser.getRooms("Manu", new AgodaIdentifier().getManu(),"2016-6-14","2016-6-15");
+		ArrayList<RoomPrice> pList = AgodaParser.getRooms("Manu", new AgodaIdentifier().getNinetree(),"2016-7-14","2016-7-15");
 		
 		for(RoomPrice rp : pList)
 		{
