@@ -39,13 +39,13 @@ public class SeleniumRequester {
         String source = driver.getPageSource();
         Source s = new Source(source);
         
-        if(s.getFirstElementByClass("currency anchor") == null){
-        	try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        while(s.getFirstElementByClass("currency anchor") == null){
+            	try {
+    				Thread.sleep(1000);
+    			} catch (InterruptedException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
         }
         	
 		if (!s.getFirstElementByClass("currency anchor").getContent().toString().equals("KRW"))
