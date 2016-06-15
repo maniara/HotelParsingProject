@@ -149,12 +149,12 @@ public class RoomPrice {
 	@Override
 	public String toString()
 	{
-		String cancle = "환불불가";
-		String bk = "조식불포함";
+		String cancle = "No cancle";
+		String bk = "No breakfast";
 		if(freeCancle)
-			cancle="환불가능";
+			cancle="Free cancle";
 		if(this.breakfastIncluded)
-			bk = "조식포함";
+			bk = "Breakfast inluded";
 		return sourceSite+";"+hotelName+";"+checkInDate+";"+roomTypeKor+";"+priceKRW+";"+cancle+";"+bk;
 	}
 	

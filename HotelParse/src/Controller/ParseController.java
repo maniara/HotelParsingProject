@@ -24,15 +24,15 @@ public class ParseController {
 	
 	public static void main(String args[]) throws MalformedURLException,IOException, ParseException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException
 	{
-		int idays = 5;
-		int num_days=7;
+		int idays = 1;
+		int num_days=30;
 		ArrayList<RoomPrice> pList = new ArrayList<RoomPrice>();
 		
 		while (idays<num_days){
 			//Setting date
 			String checkin=DateConverter.getDate(idays );
 			String checkout=DateConverter.getDate(idays+1);
-			System.out.print("Check in-"+checkin+";");
+			System.out.println("Check in-"+checkin+";");
 			//calling Parsers
 			//pList.addAll(AgodaParser.getRooms(new AgodaIdentifier().getSejong(), checkin, checkout));
 			//ArrayList<RoomPrice> todayPrice = ExpediaParser.getRooms(new ExpediaIdentifier().getSkypark(), checkin.replace("-","."), checkout.replace("-","."));
@@ -63,19 +63,26 @@ public class ParseController {
 		
 		for(String hotel : hotelList)
 		{
-			System.out.print(hotel+",");
+			System.out.println(hotel+" Searching... : ");
 			
 			//Agoda
 			Method agodaHotelGetter = getHotelGetter(AI,hotel);
-			rpList.addAll(AgodaParser.getRooms(hotel, (String) agodaHotelGetter.invoke(AI), checkin.replace("-","."), checkout.replace("-",".")));
-			
+			ArrayList<RoomPrice> agRp = AgodaParser.getRooms(hotel, (String) agodaHotelGetter.invoke(AI), checkin.replace("-","."), checkout.replace("-","."));
+			rpList.addAll(agRp);
+						
 			//Expedia
 			Method expediaHotelGetter = getHotelGetter(EI,hotel);
-			rpList.addAll(ExpediaParser.getRooms(hotel, (String) expediaHotelGetter.invoke(EI), checkin.replace("-","."), checkout.replace("-",".")));
+			ArrayList<RoomPrice> epRp = ExpediaParser.getRooms(hotel, (String) expediaHotelGetter.invoke(EI), checkin.replace("-","."), checkout.replace("-",".")); 
+			rpList.addAll(epRp);
 			
 			//Booking
 			Method bookingHotelGetter = getHotelGetter(BI,hotel);
-			rpList.addAll(BookingDotComParser.getRoom(hotel, (String) bookingHotelGetter.invoke(BI), checkin, checkout));
+			ArrayList<RoomPrice> bkRp = BookingDotComParser.getRoom(hotel, (String) bookingHotelGetter.invoke(BI), checkin, checkout); 
+			rpList.addAll(bkRp);
+			
+			System.out.print(hotel + ": Collected "+agRp.size()+" prices in Agoda, ");
+			System.out.print(epRp.size()+" prices in Expedia and ");
+			System.out.println(bkRp.size()+" prices in Booking.com in "+ checkin);
 		}
 		
 		return rpList;

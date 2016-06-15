@@ -13,7 +13,7 @@ import Parser.RoomPrice;
 public class ExpediaParserTest {
 	@Test
 	public void getRoomTest() throws MalformedURLException, IOException, ParseException{
-		ArrayList<RoomPrice> pList = ExpediaParser.getRooms("Ninetree",new ExpediaIdentifier().getSejong(),"2016.7.12","2016.7.13");
+		ArrayList<RoomPrice> pList = ExpediaParser.getRooms("Ninetree",new ExpediaIdentifier().getSkypark(),"2016.6.30","2016.7.1");
 		
 		for(RoomPrice rp : pList)
 		{

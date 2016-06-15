@@ -8,6 +8,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import net.htmlparser.jericho.Source;
+
+//There needs to wait time for loading page complete.
 public class SeleniumRequester {
 	public static WebDriver driver;
 	
@@ -32,24 +35,33 @@ public class SeleniumRequester {
 			driver = new FirefoxDriver ();
 		Wait<WebDriver> wait = new WebDriverWait(driver, 30);
         driver.get(url);
-        try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        driver.findElement(By.cssSelector(("a[data-selenium='currency']"))).click();
-        driver.findElement(By.cssSelector(("a[data-selenium='currency-code'][title='한국 원']"))).click();
-
-        //wait until currency changed
-        try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
         
         String source = driver.getPageSource();
+        Source s = new Source(source);
+        
+        if(s.getFirstElementByClass("currency anchor") == null){
+        	try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        	
+		if (!s.getFirstElementByClass("currency anchor").getContent().toString().equals("KRW"))
+		{
+	        driver.findElement(By.cssSelector(("a[data-selenium='currency']"))).click();
+	        driver.findElement(By.cssSelector(("a[data-selenium='currency-code'][title='한국 원']"))).click();
+	        
+	        //not to work WebDriverWait
+	        try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        source = driver.getPageSource();
+		}
         
         return source;
 	}

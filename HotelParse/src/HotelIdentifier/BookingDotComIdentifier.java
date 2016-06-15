@@ -9,13 +9,13 @@ public class BookingDotComIdentifier extends HotelIdentifier{
 
 	@Override
 	public void setSejong() {
-		// TODO Auto-generated method stub
+		sejong = "sejong";
 		
 	}
 
 	@Override
 	public void setPacific() {
-		// TODO Auto-generated method stub
+		pacific = "pacific";
 		
 	}
 
@@ -27,13 +27,13 @@ public class BookingDotComIdentifier extends HotelIdentifier{
 
 	@Override
 	public void setShinshin() {
-		// TODO Auto-generated method stub
+		shinshin = "shinshin-myeongdong";
 		
 	}
 
 	@Override
 	public void setSkypark() {
-		// TODO Auto-generated method stub
+		skypark="skypark";
 		
 	}
 
