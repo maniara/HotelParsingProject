@@ -51,7 +51,7 @@ public class SeleniumRequester {
 		if (!s.getFirstElementByClass("currency anchor").getContent().toString().equals("KRW"))
 		{
 	        driver.findElement(By.cssSelector(("a[data-selenium='currency']"))).click();
-	        driver.findElement(By.cssSelector(("a[data-selenium='currency-code'][title='ÇÑ±¹ ¿ø']"))).click();
+	        driver.findElement(By.cssSelector(("li[data-id='26']"))).click();
 	        
 	        //not to work WebDriverWait
 	        try {
