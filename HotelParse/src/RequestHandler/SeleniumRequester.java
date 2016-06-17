@@ -40,16 +40,20 @@ public class SeleniumRequester {
         Source s = new Source(source);
         
         while(s.getFirstElementByClass("currency anchor") == null){
+        	System.out.println("LOG : Currency element is null");
             	try {
     				Thread.sleep(1000);
     			} catch (InterruptedException e) {
     				// TODO Auto-generated catch block
     				e.printStackTrace();
     			}
+			s = new Source(driver.getPageSource());
+			//System.out.println("LOG : " + s.getFirstElementByClass("currency anchor"));
         }
         	
 		if (!s.getFirstElementByClass("currency anchor").getContent().toString().equals("KRW"))
 		{
+			System.out.println("LOG : Currency changing");
 	        driver.findElement(By.cssSelector(("a[data-selenium='currency']"))).click();
 	        driver.findElement(By.cssSelector(("li[data-id='26']"))).click();
 	        

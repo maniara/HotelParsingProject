@@ -17,6 +17,7 @@ public class AgodaParser {
 	public static ArrayList<RoomPrice> getRooms(String hotelName, String hotelId, String checkInDate,
 			String checkOutDate) throws MalformedURLException, IOException {
 
+		//System.out.println("LOG : Processing Agoda Parsing..." + hotelName+","+checkInDate);
 		ArrayList<RoomPrice> roomPriceList = new ArrayList<RoomPrice>();
 
 		// http://www.agoda.com/ko-kr/nine-tree-hotel-myeong-dong/hotel/seoul-kr.html?asq=u2qcKLxwzRU5NDuxJ0kOFzzMnA%2bOamSu%2ffpUmp7dpwoJWuxG5MGtEhd1mcug%2f3JNF24%2bSMTczYXbdt%2bQXrn9zmvmUvdL2n6gimuIhTDTJjDaHr6mWYkscVkxnloeI%2bzAmgkJDRWyXYs%2bhuEHG%2bLQIIJ7pIpYNf0lxAtiP9ft%2fZ5Zy22DvgBpHXJhAxrS7SreCL4TBJE9pye3xXFa3JCPPuNXkMrN4L8GSQsLfM4C6EPi93LUom3IjiMssHq74%2bUgNXO5wfCxlIYO0n1kD0fR5Q%3d%3d&tick=636009056042&pagetypeid=1&origin=KR&cid=-1&htmlLanguage=ko-kr&checkIn=2016-6-25&checkout=2016-6-26&los=1&rooms=1&adults=2&childs=0&isFromSearchBox=true
@@ -29,13 +30,7 @@ public class AgodaParser {
 
 		// if the return price is not KRW, success is false
 		Source source = new Source(SeleniumRequester.getAgodaResponse(url));
-		// Source source = new Source(new URL(url));
 
-		// System.out.println(source.getFirstElementByClass("currency
-		// anchor").getContent().toString());
-		// check the currency
-
-		// parsing if the currency is KRW
 		for (Element e1 : source.getAllElements()) {
 			if (e1.getAttributeValue("data-selenium") == null)
 				continue;
@@ -69,6 +64,8 @@ public class AgodaParser {
 				RoomPrice rp = new RoomPrice("Agoda", hotelName, checkInDate, roomType, roomType, price);
 				rp.setBreakfastIncluded(includedBreakfast);
 				rp.setFreeCancle(freeCancle);
+				
+				//System.out.println("LOG : Adding "+rp.toString());
 
 				roomPriceList.add(rp);
 			}
