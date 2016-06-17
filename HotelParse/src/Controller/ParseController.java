@@ -81,8 +81,8 @@ public class ParseController {
 			rpList.addAll(bkRp);
 			
 			System.out.print(hotel + ": Collected "+agRp.size()+" prices in Agoda, ");
-			//System.out.print(epRp.size()+" prices in Expedia and ");
-			//System.out.println(bkRp.size()+" prices in Booking.com in "+ checkin);
+			System.out.print(epRp.size()+" prices in Expedia and ");
+			System.out.println(bkRp.size()+" prices in Booking.com in "+ checkin);
 		}
 		
 		return rpList;
